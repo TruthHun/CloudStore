@@ -9,6 +9,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/mozillazg/go-cos"
 )
 
 type COS struct {
