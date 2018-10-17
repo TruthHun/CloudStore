@@ -101,5 +101,4 @@ fabric.properties
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-test_config/oss.json
-test_config/config.json
+*_test.go
