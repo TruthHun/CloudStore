@@ -102,3 +102,5 @@ fabric.properties
 *.out
 
 *_test.go
+
+conf/app.conf

@@ -11,6 +11,7 @@ type OSS struct {
 	Secret    string
 	Endpoint  string
 	Bucket    string
+	Domain    string
 	bucketObj *oss.Bucket
 }
 

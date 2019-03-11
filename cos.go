@@ -19,6 +19,7 @@ type COS struct {
 	Bucket    string
 	AppID     string
 	Region    string
+	Domain    string
 	client    *cos.Client
 }
 

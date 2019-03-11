@@ -12,6 +12,7 @@ type BOS struct {
 	SecretKey string
 	Bucket    string
 	Endpoint  string
+	Domain    string
 	client    *bos.Client
 }
 
