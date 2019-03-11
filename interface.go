@@ -5,4 +5,5 @@ type CloudStore interface {
 	Delete(...string) error                         // 删除文件
 	GetSignURL(string, int64) (string, error)       // 文件访问签名
 	IsExist(string) error                           // 判断文件是否存在
+	//Lists(prefix stiring)                         // 文件前缀，列出文件
 }
