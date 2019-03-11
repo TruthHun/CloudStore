@@ -1,8 +1,6 @@
 package CloudStore
 
 import (
-	"strings"
-
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
 
@@ -32,34 +30,19 @@ func NewOSS(key, secret, endpoint, bucket string) (o *OSS, err error) {
 	return
 }
 
-// put object
-func (o *OSS) PutObject(local, object string, header map[string]string) (err error) {
-	var opts []oss.Option
-	if len(header) > 0 {
-		for key, val := range header {
-			// TODO: more headers to set
-			switch strings.ToLower(key) {
-			case "content-encoding":
-				opts = append(opts, oss.ContentEncoding(val))
-			case "content-disposition":
-				opts = append(opts, oss.ContentDisposition(val))
-			case "content-type":
-				opts = append(opts, oss.ContentType(val))
-			}
-		}
-	}
-	return o.bucketObj.PutObjectFromFile(object, local, opts...)
-}
+func (o *OSS) IsExist(object string) (err error) {
 
-// delete objects
-func (o *OSS) DeleteObjects(objects []string) (err error) {
-	if len(objects) > 0 {
-		_, err = o.bucketObj.DeleteObjects(objects)
-	}
 	return
 }
 
-// get objects url
-func (o *OSS) GetObjectURL(object string, expire int64) (urlStr string, err error) {
-	return o.bucketObj.SignURL(object, oss.HTTPGet, expire)
+func (o *OSS) Put(tmpFile, saveFile string, header ...map[string]string) (err error) {
+	return
+}
+
+func (o *OSS) Delete(object ...string) (err error) {
+	return
+}
+
+func (o *OSS) GetSignURL(object string, expire int64) (link string, err error) {
+	return
 }

@@ -111,6 +111,12 @@
 			"revisionTime": "2018-09-17T02:50:42Z"
 		},
 		{
+			"checksumSHA1": "IRUTaR4XavaC4sDA+FNLLTadxFs=",
+			"path": "github.com/upyun/go-sdk/upyun",
+			"revision": "330f8c22378ab3e5d75d12c37be3434a53a55ed2",
+			"revisionTime": "2018-09-17T02:50:42Z"
+		},
+		{
 			"path": "golang.org/x/time/rate",
 			"revision": ""
 		}
