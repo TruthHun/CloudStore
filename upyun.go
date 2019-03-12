@@ -45,7 +45,7 @@ func (u *UpYun) IsExist(object string) (err error) {
 	return
 }
 
-func (u *UpYun) Save(tmpFile, saveFile string, headers ...map[string]string) (err error) {
+func (u *UpYun) Upload(tmpFile, saveFile string, headers ...map[string]string) (err error) {
 	_, err = os.Stat(tmpFile)
 	h := make(map[string]string)
 	if err != nil {
