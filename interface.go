@@ -20,8 +20,8 @@ type CloudStore interface {
 	IsExist(string) error                              // 判断文件是否存在
 	Lists(prefix string) ([]File, error)               // 文件前缀，列出文件
 	Upload(string, string, ...map[string]string) error // 上传文件
-	//Download(string)//下载文件
-	//GetInfo   //获取指定文件信息
+	Download(string, string) error                     // 下载文件
+	GetInfo(string) (File, error)                      // 获取指定文件信息
 }
 
 // MD5 Crypt

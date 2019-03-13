@@ -40,8 +40,7 @@ func NewUpYun(bucket, operator, password, domain, secret string) *UpYun {
 }
 
 func (u *UpYun) IsExist(object string) (err error) {
-	path := "/" + strings.TrimLeft(object, "./")
-	_, err = u.Client.GetInfo(path)
+	_, err = u.Client.GetInfo(u.objectToPath(object))
 	return
 }
 
@@ -57,18 +56,18 @@ func (u *UpYun) Upload(tmpFile, saveFile string, headers ...map[string]string) (
 		}
 	}
 	err = u.Client.Put(&upyun.PutObjectConfig{
-		Path:      saveFile,
+		Path:      u.objectToPath(saveFile),
 		LocalPath: tmpFile,
 		Headers:   h,
 	})
 	return
 }
 
-func (u *UpYun) Delete(object ...string) (err error) {
+func (u *UpYun) Delete(objects ...string) (err error) {
 	var errs []string
-	for _, item := range object {
+	for _, object := range objects {
 		err = u.Client.Delete(&upyun.DeleteObjectConfig{
-			Path: "/" + strings.TrimLeft(item, "./"),
+			Path: u.objectToPath(object),
 		})
 		if err != nil {
 			errs = append(errs, err.Error())
@@ -82,7 +81,7 @@ func (u *UpYun) Delete(object ...string) (err error) {
 
 // https://help.upyun.com/knowledge-base/cdn-token-limite/
 func (u *UpYun) GetSignURL(object string, expire int64) (link string, err error) {
-	path := "/" + strings.TrimLeft(object, "./")
+	path := u.objectToPath(object)
 	if expire <= 0 {
 		return u.Domain + path, nil
 	}
@@ -110,4 +109,32 @@ func (u *UpYun) Lists(prefix string) (files []File, err error) {
 		files = append(files, file)
 	}
 	return
+}
+
+func (u *UpYun) Download(object string, savePath string) (err error) {
+	_, err = u.Client.Get(&upyun.GetObjectConfig{
+		Path:      u.objectToPath(object),
+		LocalPath: savePath,
+	})
+	return
+}
+
+func (u *UpYun) GetInfo(object string) (info File, err error) {
+	var fileInfo *upyun.FileInfo
+	fileInfo, err = u.Client.GetInfo(u.objectToPath(object))
+	if err != nil {
+		return
+	}
+	info = File{
+		ModTime: fileInfo.Time,
+		Name:    fileInfo.Name,
+		Size:    fileInfo.Size,
+		IsDir:   fileInfo.IsDir,
+		Header:  fileInfo.Meta,
+	}
+	return
+}
+
+func (u *UpYun) objectToPath(object string) (path string) {
+	return "/" + strings.TrimLeft(object, "./")
 }
