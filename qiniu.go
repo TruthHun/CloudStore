@@ -24,6 +24,37 @@ func NewQINIU(accessKey, secretKey, bucket, domain string) (q *QINIU) {
 	}
 }
 
+func (q *QINIU) IsExist(object string) (err error) {
+	return
+}
+
+func (q *QINIU) Upload(tmpFile, saveFile string, header ...map[string]string) (err error) {
+	return
+}
+
+func (q *QINIU) Delete(object ...string) (err error) {
+	return
+}
+
+func (q *QINIU) GetSignURL(object string, expire int64) (link string, err error) {
+	return
+}
+
+func (q *QINIU) Download(object string, savePath string) (err error) {
+	return
+}
+
+func (q *QINIU) GetInfo(object string) (info File, err error) {
+
+	return
+}
+
+func (q *QINIU) Lists(prefix string) (files []File, err error) {
+	return
+}
+
+//////////
+
 func (q *QINIU) PutObject(local, object string, header map[string]string) (err error) {
 	// TODO: set headers
 	putPolicy := storage.PutPolicy{

@@ -1,8 +1,6 @@
 package CloudStore
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"time"
 )
 
@@ -22,11 +20,4 @@ type CloudStore interface {
 	Upload(string, string, ...map[string]string) error // 上传文件
 	Download(string, string) error                     // 下载文件
 	GetInfo(string) (File, error)                      // 获取指定文件信息
-}
-
-// MD5 Crypt
-func MD5Crypt(str string) string {
-	h := md5.New()
-	h.Write([]byte(str))
-	return hex.EncodeToString(h.Sum(nil))
 }

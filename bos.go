@@ -29,11 +29,10 @@ func NewBOS(accessKey, secretKey, bucket, endpoint string) (b *BOS, err error) {
 }
 
 func (b *BOS) IsExist(object string) (err error) {
-
 	return
 }
 
-func (b *BOS) Put(tmpFile, saveFile string, header ...map[string]string) (err error) {
+func (b *BOS) Upload(tmpFile, saveFile string, header ...map[string]string) (err error) {
 	return
 }
 
@@ -42,5 +41,18 @@ func (b *BOS) Delete(object ...string) (err error) {
 }
 
 func (b *BOS) GetSignURL(object string, expire int64) (link string, err error) {
+	return
+}
+
+func (b *BOS) Download(object string, savePath string) (err error) {
+	return
+}
+
+func (b *BOS) GetInfo(object string) (info File, err error) {
+
+	return
+}
+
+func (b *BOS) Lists(prefix string) (files []File, err error) {
 	return
 }

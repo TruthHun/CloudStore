@@ -42,11 +42,10 @@ func NewCOS(secretId, secretKey, bucket, appId, region string) (c *COS, err erro
 }
 
 func (c *COS) IsExist(object string) (err error) {
-
 	return
 }
 
-func (c *COS) Put(tmpFile, saveFile string, header ...map[string]string) (err error) {
+func (c *COS) Upload(tmpFile, saveFile string, header ...map[string]string) (err error) {
 	return
 }
 
@@ -55,5 +54,18 @@ func (c *COS) Delete(object ...string) (err error) {
 }
 
 func (c *COS) GetSignURL(object string, expire int64) (link string, err error) {
+	return
+}
+
+func (c *COS) Download(object string, savePath string) (err error) {
+	return
+}
+
+func (c *COS) GetInfo(object string) (info File, err error) {
+
+	return
+}
+
+func (c *COS) Lists(prefix string) (files []File, err error) {
 	return
 }
