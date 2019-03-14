@@ -3,13 +3,10 @@ help:
 	@echo "lint             run lint"
 	@echo "example          run examples"
 
-export GO111MODULE=on
-
 .PHONY: test
 test:
-	go test -race -v -cover -coverprofile cover.out
+	go test -v -cover -coverprofile cover.out
 	go tool cover -html=cover.out -o cover.html
-	-open cover.html
 
 .PHONY: lint
 lint:
@@ -20,4 +17,6 @@ lint:
 
 .PHONY: example
 example:
-	cd _example && bash test.sh
+	cd example && sh test.sh
+ci-test:
+	cd costesting && go test -v 

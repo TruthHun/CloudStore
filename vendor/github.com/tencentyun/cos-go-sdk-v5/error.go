@@ -7,24 +7,32 @@ import (
 	"net/http"
 )
 
-// ErrorResponse 包含 COS HTTP API 返回的错误信息
+// ErrorResponse 包含 API 返回的错误信息
 //
-// https://cloud.tencent.com/document/product/436/7730
+// https://www.qcloud.com/document/product/436/7730
 type ErrorResponse struct {
 	XMLName   xml.Name       `xml:"Error"`
 	Response  *http.Response `xml:"-"`
 	Code      string
 	Message   string
 	Resource  string
-	RequestID string `xml:"RequestId"`
+	RequestID string `header:"x-cos-request-id,omitempty" url:"-" xml:"-"`
 	TraceID   string `xml:"TraceId,omitempty"`
 }
 
-// Error ...
+// Error returns the error msg
 func (r *ErrorResponse) Error() string {
+	RequestID := r.RequestID
+	if RequestID == "" {
+		RequestID = r.Response.Header["X-Cos-Request-Id"][0]
+	}
+	TraceID := r.TraceID
+	if TraceID == "" {
+		TraceID = r.Response.Header["X-Cos-Trace-Id"][0]
+	}
 	return fmt.Sprintf("%v %v: %d %v(Message: %v, RequestId: %v, TraceId: %v)",
 		r.Response.Request.Method, r.Response.Request.URL,
-		r.Response.StatusCode, r.Code, r.Message, r.RequestID, r.TraceID)
+		r.Response.StatusCode, r.Code, r.Message, RequestID, TraceID)
 }
 
 // 检查 response 是否是出错时的返回的 response
@@ -36,12 +44,6 @@ func checkResponse(r *http.Response) error {
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
 		xml.Unmarshal(data, errorResponse)
-	}
-	if errorResponse.RequestID == "" {
-		errorResponse.RequestID = r.Header.Get(xCosRequestID)
-	}
-	if errorResponse.TraceID == "" {
-		errorResponse.TraceID = r.Header.Get(xCosTraceID)
 	}
 	return errorResponse
 }

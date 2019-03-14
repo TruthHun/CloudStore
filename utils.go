@@ -6,8 +6,14 @@ import (
 	"strings"
 )
 
-func objectToPath(object string) (path string) {
+// 绝对路径，abs => absolute
+func objectAbs(object string) string {
 	return "/" + strings.TrimLeft(object, " ./")
+}
+
+// 相对路径 rel => relative
+func objectRel(object string) string {
+	return strings.TrimLeft(object, " ./")
 }
 
 // MD5 Crypt

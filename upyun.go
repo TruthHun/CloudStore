@@ -40,7 +40,7 @@ func NewUpYun(bucket, operator, password, domain, secret string) *UpYun {
 }
 
 func (u *UpYun) IsExist(object string) (err error) {
-	_, err = u.Client.GetInfo(objectToPath(object))
+	_, err = u.Client.GetInfo(objectAbs(object))
 	return
 }
 
@@ -56,7 +56,7 @@ func (u *UpYun) Upload(tmpFile, saveFile string, headers ...map[string]string) (
 		}
 	}
 	err = u.Client.Put(&upyun.PutObjectConfig{
-		Path:      objectToPath(saveFile),
+		Path:      objectAbs(saveFile),
 		LocalPath: tmpFile,
 		Headers:   h,
 	})
@@ -67,7 +67,7 @@ func (u *UpYun) Delete(objects ...string) (err error) {
 	var errs []string
 	for _, object := range objects {
 		err = u.Client.Delete(&upyun.DeleteObjectConfig{
-			Path: objectToPath(object),
+			Path: objectAbs(object),
 		})
 		if err != nil {
 			errs = append(errs, err.Error())
@@ -81,7 +81,7 @@ func (u *UpYun) Delete(objects ...string) (err error) {
 
 // https://help.upyun.com/knowledge-base/cdn-token-limite/
 func (u *UpYun) GetSignURL(object string, expire int64) (link string, err error) {
-	path := objectToPath(object)
+	path := objectAbs(object)
 	if expire <= 0 {
 		return u.Domain + path, nil
 	}
@@ -104,7 +104,7 @@ func (u *UpYun) Lists(prefix string) (files []File, err error) {
 			Size:    obj.Size,
 			IsDir:   obj.IsDir,
 			Header:  obj.Meta, // 注意：这里获取不到文件的header
-			Name:    obj.Name,
+			Name:    objectRel(obj.Name),
 		}
 		files = append(files, file)
 	}
@@ -113,7 +113,7 @@ func (u *UpYun) Lists(prefix string) (files []File, err error) {
 
 func (u *UpYun) Download(object string, savePath string) (err error) {
 	_, err = u.Client.Get(&upyun.GetObjectConfig{
-		Path:      objectToPath(object),
+		Path:      objectAbs(object),
 		LocalPath: savePath,
 	})
 	return
@@ -121,13 +121,13 @@ func (u *UpYun) Download(object string, savePath string) (err error) {
 
 func (u *UpYun) GetInfo(object string) (info File, err error) {
 	var fileInfo *upyun.FileInfo
-	fileInfo, err = u.Client.GetInfo(objectToPath(object))
+	fileInfo, err = u.Client.GetInfo(objectAbs(object))
 	if err != nil {
 		return
 	}
 	info = File{
 		ModTime: fileInfo.Time,
-		Name:    fileInfo.Name,
+		Name:    objectRel(fileInfo.Name),
 		Size:    fileInfo.Size,
 		IsDir:   fileInfo.IsDir,
 		Header:  fileInfo.Meta,

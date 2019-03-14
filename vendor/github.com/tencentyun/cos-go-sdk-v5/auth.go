@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -18,22 +19,22 @@ const defaultAuthExpire = time.Hour
 
 // 需要校验的 Headers 列表
 var needSignHeaders = map[string]bool{
-	"host":                         true,
-	"range":                        true,
-	"x-cos-acl":                    true,
-	"x-cos-grant-read":             true,
-	"x-cos-grant-write":            true,
-	"x-cos-grant-full-control":     true,
-	"response-content-type":        true,
-	"response-content-language":    true,
-	"response-expires":             true,
-	"response-cache-control":       true,
-	"response-content-disposition": true,
-	"response-content-encoding":    true,
-	"cache-control":                true,
-	"content-disposition":          true,
-	"content-encoding":             true,
-	// "content-type":                   true,
+	"host":                           true,
+	"range":                          true,
+	"x-cos-acl":                      true,
+	"x-cos-grant-read":               true,
+	"x-cos-grant-write":              true,
+	"x-cos-grant-full-control":       true,
+	"response-content-type":          true,
+	"response-content-language":      true,
+	"response-expires":               true,
+	"response-cache-control":         true,
+	"response-content-disposition":   true,
+	"response-content-encoding":      true,
+	"cache-control":                  true,
+	"content-disposition":            true,
+	"content-encoding":               true,
+	"content-type":                   true,
 	"content-length":                 true,
 	"content-md5":                    true,
 	"expect":                         true,
@@ -59,9 +60,6 @@ type AuthTime struct {
 //
 //   expire: 从现在开始多久过期.
 func NewAuthTime(expire time.Duration) *AuthTime {
-	if expire == time.Duration(0) {
-		expire = defaultAuthExpire
-	}
 	signStartTime := time.Now()
 	keyStartTime := signStartTime
 	signEndTime := signStartTime.Add(expire)
@@ -85,14 +83,14 @@ func (a *AuthTime) keyString() string {
 }
 
 // newAuthorization 通过一系列步骤生成最终需要的 Authorization 字符串
-func newAuthorization(auth Auth, req *http.Request, authTime AuthTime) string {
-	secretKey := auth.SecretKey
-	secretID := auth.SecretID
+func newAuthorization(secretID, secretKey string, req *http.Request, authTime *AuthTime) string {
 	signTime := authTime.signString()
 	keyTime := authTime.keyString()
 	signKey := calSignKey(secretKey, keyTime)
 
-	formatHeaders, signedHeaderList := genFormatHeaders(req.Header)
+	formatHeaders := *new(string)
+	signedHeaderList := *new([]string)
+	formatHeaders, signedHeaderList = genFormatHeaders(req.Header)
 	formatParameters, signedParameterList := genFormatParameters(req.URL.Query())
 	formatString := genFormatString(req.Method, *req.URL, formatParameters, formatHeaders)
 
@@ -106,11 +104,13 @@ func newAuthorization(auth Auth, req *http.Request, authTime AuthTime) string {
 }
 
 // AddAuthorizationHeader 给 req 增加签名信息
-func AddAuthorizationHeader(secretID, secretKey string, req *http.Request, authTime *AuthTime) {
-	auth := newAuthorization(Auth{
-		SecretID:  secretID,
-		SecretKey: secretKey,
-	}, req, *authTime)
+func AddAuthorizationHeader(secretID, secretKey string, sessionToken string, req *http.Request, authTime *AuthTime) {
+	auth := newAuthorization(secretID, secretKey, req,
+		authTime,
+	)
+	if len(sessionToken) > 0 {
+		req.Header.Set("x-cos-security-token", sessionToken)
+	}
 	req.Header.Set("Authorization", auth)
 }
 
@@ -212,34 +212,44 @@ func isSignHeader(key string) bool {
 	return strings.HasPrefix(key, privateHeaderPrefix)
 }
 
-// Auth 签名相关的认证信息
-type Auth struct {
-	SecretID  string
-	SecretKey string
-	// 签名多久过期，默认是 time.Hour
-	Expire time.Duration
-}
-
 // AuthorizationTransport 给请求增加 Authorization header
 type AuthorizationTransport struct {
-	SecretID  string
-	SecretKey string
-	// 签名多久过期，默认是 time.Hour
-	Expire time.Duration
-
+	SecretID     string
+	SecretKey    string
+	SessionToken string
+	rwLocker     sync.RWMutex
+	// 签名多久过期
+	Expire    time.Duration
 	Transport http.RoundTripper
+}
+
+// SetCredential update the SecretID(ak), SercretKey(sk), sessiontoken
+func (t *AuthorizationTransport) SetCredential(ak, sk, token string) {
+	t.rwLocker.Lock()
+	defer t.rwLocker.Unlock()
+	t.SecretID = ak
+	t.SecretKey = sk
+	t.SessionToken = token
+}
+
+// GetCredential get the ak, sk, token
+func (t *AuthorizationTransport) GetCredential() (string, string, string) {
+	t.rwLocker.RLock()
+	defer t.rwLocker.RUnlock()
+	return t.SecretID, t.SecretKey, t.SessionToken
 }
 
 // RoundTrip implements the RoundTripper interface.
 func (t *AuthorizationTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	// 使用预签名授权 URL 时跳过添加 Authorization header 的步骤
-	if req.URL.Query().Get("sign") == "" {
-		req = cloneRequest(req) // per RoundTrip contract
-
-		// 增加 Authorization header
-		authTime := NewAuthTime(t.Expire)
-		AddAuthorizationHeader(t.SecretID, t.SecretKey, req, authTime)
+	req = cloneRequest(req) // per RoundTrip contract
+	if t.Expire == time.Duration(0) {
+		t.Expire = defaultAuthExpire
 	}
+
+	ak, sk, token := t.GetCredential()
+	// 增加 Authorization header
+	authTime := NewAuthTime(t.Expire)
+	AddAuthorizationHeader(ak, sk, token, req, authTime)
 
 	resp, err := t.transport().RoundTrip(req)
 	return resp, err

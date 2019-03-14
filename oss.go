@@ -25,7 +25,7 @@ func NewOSS(key, secret, endpoint, bucket, domain string) (o *OSS, err error) {
 	if domain == "" {
 		domain = "https://" + bucket + "." + endpoint
 	}
-	domain = strings.TrimRight(domain, "/")
+	domain = strings.TrimRight(domain, "/ ")
 	o = &OSS{
 		Key:      key,
 		Secret:   secret,
@@ -41,14 +41,9 @@ func NewOSS(key, secret, endpoint, bucket, domain string) (o *OSS, err error) {
 	return
 }
 
-// 注意：阿里云OSS前面，object 前不能是"/"，所以这里需要处理
-func (o *OSS) objectToPath(object string) (path string) {
-	return strings.TrimLeft(object, "./")
-}
-
 func (o *OSS) IsExist(object string) (err error) {
 	var b bool
-	b, err = o.bucketObj.IsObjectExist(o.objectToPath(object))
+	b, err = o.bucketObj.IsObjectExist(objectRel(object))
 	if err != nil {
 		return
 	}
@@ -83,7 +78,7 @@ func (o *OSS) Delete(objects ...string) (err error) {
 }
 
 func (o *OSS) GetSignURL(object string, expire int64) (link string, err error) {
-	path := o.objectToPath(object)
+	path := objectRel(object)
 	if expire <= 0 {
 		return o.Domain + "/" + path, nil
 	}
@@ -91,7 +86,7 @@ func (o *OSS) GetSignURL(object string, expire int64) (link string, err error) {
 }
 
 func (o *OSS) Download(object string, savePath string) (err error) {
-	err = o.bucketObj.DownloadFile(o.objectToPath(object), savePath, 1048576)
+	err = o.bucketObj.DownloadFile(objectRel(object), savePath, 1048576)
 	return
 }
 
@@ -108,7 +103,7 @@ func (o *OSS) GetInfo(object string) (info File, err error) {
 
 	var header http.Header
 
-	path := o.objectToPath(object)
+	path := objectRel(object)
 	header, err = o.bucketObj.GetObjectMeta(path)
 	if err != nil {
 		return
@@ -130,7 +125,7 @@ func (o *OSS) GetInfo(object string) (info File, err error) {
 
 func (o *OSS) Lists(prefix string) (files []File, err error) {
 	var res oss.ListObjectsResult
-	res, err = o.bucketObj.ListObjects(oss.Prefix(o.objectToPath(prefix)))
+	res, err = o.bucketObj.ListObjects(oss.Prefix(objectRel(prefix)))
 	if err != nil {
 		return
 	}
@@ -139,7 +134,7 @@ func (o *OSS) Lists(prefix string) (files []File, err error) {
 			ModTime: object.LastModified,
 			Name:    object.Key,
 			Size:    object.Size,
-			IsDir:   false,
+			IsDir:   object.Size == 0,
 			Header:  map[string]string{},
 		})
 	}

@@ -105,6 +105,12 @@
 			"revisionTime": "2019-03-07T06:59:57Z"
 		},
 		{
+			"checksumSHA1": "Gb8jqE3ap49Ym/y/DcmH2g9sOeQ=",
+			"path": "github.com/tencentyun/cos-go-sdk-v5",
+			"revision": "4df4d4ccb586c84623cecdd577ebcac3b0ccbcbe",
+			"revisionTime": "2019-03-14T13:27:24Z"
+		},
+		{
 			"checksumSHA1": "ZLTCybXma8WvsH5UsIm87gYCIEo=",
 			"path": "github.com/upyun/go-sdk",
 			"revision": "330f8c22378ab3e5d75d12c37be3434a53a55ed2",
