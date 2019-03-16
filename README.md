@@ -1,16 +1,35 @@
 # 云储存
 
-- oss - 阿里云云存储
-- cos - 腾讯云云存储
+- [x] oss - 阿里云云存储
+    - SDK:
+    - 文档:
+- [x] cos - 腾讯云云存储
+    - SDK:
+    - 文档:
 - bos - 百度云云存储
+    - SDK:
+    - 文档:
 - qiniu - 七牛云存储
-- upyun - 又拍云存储
+    - SDK:
+    - 文档:
+- [x] upyun - 又拍云存储
+  - SDK:
+  - 文档:  
+- obs - 华为云云存储
+    - SDK：      https://support.huaweicloud.com/devg-obs_go_sdk_doc_zh/zh-cn_topic_0142815182.html
+    - 文档：      https://support.huaweicloud.com/api-obs_go_sdk_api_zh/zh-cn_topic_0142812005.html
+- minio
+    - SDK:
+    - 文档:
 - local - 本地化存储
 
 
-TODO: 注意，domain 参数要处理一下，最后统一不带"/"
 
-- ~~obs - 华为云云存储~~
+
+TODO: 
+- [ ] 注意，domain 参数要处理一下，最后统一不带"/"
+- [ ] 最后获取的签名链接，替换成绑定的域名
+
 
 ## 为什么要有这个项目？
 

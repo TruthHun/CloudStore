@@ -11,12 +11,12 @@ import (
 )
 
 type OSS struct {
-	Key       string
-	Secret    string
-	Endpoint  string
-	Bucket    string
-	Domain    string
-	bucketObj *oss.Bucket
+	Key      string
+	Secret   string
+	Endpoint string
+	Bucket   string
+	Domain   string
+	Client   *oss.Bucket
 }
 
 // New OSS
@@ -37,13 +37,13 @@ func NewOSS(key, secret, endpoint, bucket, domain string) (o *OSS, err error) {
 	if err != nil {
 		return
 	}
-	o.bucketObj, err = client.Bucket(bucket)
+	o.Client, err = client.Bucket(bucket)
 	return
 }
 
 func (o *OSS) IsExist(object string) (err error) {
 	var b bool
-	b, err = o.bucketObj.IsObjectExist(objectRel(object))
+	b, err = o.Client.IsObjectExist(objectRel(object))
 	if err != nil {
 		return
 	}
@@ -68,12 +68,12 @@ func (o *OSS) Upload(tmpFile, saveFile string, headers ...map[string]string) (er
 			}
 		}
 	}
-	err = o.bucketObj.PutObjectFromFile(strings.TrimLeft(saveFile, "./"), tmpFile, opts...)
+	err = o.Client.PutObjectFromFile(strings.TrimLeft(saveFile, "./"), tmpFile, opts...)
 	return
 }
 
 func (o *OSS) Delete(objects ...string) (err error) {
-	_, err = o.bucketObj.DeleteObjects(objects)
+	_, err = o.Client.DeleteObjects(objects)
 	return
 }
 
@@ -82,11 +82,11 @@ func (o *OSS) GetSignURL(object string, expire int64) (link string, err error) {
 	if expire <= 0 {
 		return o.Domain + "/" + path, nil
 	}
-	return o.bucketObj.SignURL(path, http.MethodGet, expire)
+	return o.Client.SignURL(path, http.MethodGet, expire)
 }
 
 func (o *OSS) Download(object string, savePath string) (err error) {
-	err = o.bucketObj.DownloadFile(objectRel(object), savePath, 1048576)
+	err = o.Client.DownloadFile(objectRel(object), savePath, 1048576)
 	return
 }
 
@@ -104,7 +104,7 @@ func (o *OSS) GetInfo(object string) (info File, err error) {
 	var header http.Header
 
 	path := objectRel(object)
-	header, err = o.bucketObj.GetObjectMeta(path)
+	header, err = o.Client.GetObjectMeta(path)
 	if err != nil {
 		return
 	}
@@ -125,7 +125,7 @@ func (o *OSS) GetInfo(object string) (info File, err error) {
 
 func (o *OSS) Lists(prefix string) (files []File, err error) {
 	var res oss.ListObjectsResult
-	res, err = o.bucketObj.ListObjects(oss.Prefix(objectRel(prefix)))
+	res, err = o.Client.ListObjects(oss.Prefix(objectRel(prefix)))
 	if err != nil {
 		return
 	}
