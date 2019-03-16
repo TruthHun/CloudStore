@@ -763,9 +763,11 @@ type ObjectOperationInput struct {
 
 type PutObjectBasicInput struct {
 	ObjectOperationInput
-	ContentType   string
-	ContentMD5    string
-	ContentLength int64
+	ContentType         string
+	ContentMD5          string
+	ContentLength       int64
+	ContentEncoding     string
+	ContentDisposition  string
 }
 
 type PutObjectInput struct {
