@@ -9,24 +9,24 @@ import (
 )
 
 type QINIU struct {
-	AccessId     string
-	AccessSecret string
-	Bucket       string
-	Domain       string
-	Zone         *storage.Zone
-	mac          *qbox.Mac
+	AccessKey string
+	SecretKey string
+	Bucket    string
+	Domain    string
+	Zone      *storage.Zone
+	mac       *qbox.Mac
 }
 
-func NewQINIU(accessId, accessSecret, bucket, domain string) (q *QINIU, err error) {
+func NewQINIU(accessKey, secretKey, bucket, domain string) (q *QINIU, err error) {
 	q = &QINIU{
-		AccessId:     accessId,
-		AccessSecret: accessSecret,
-		Bucket:       bucket,
-		Domain:       domain,
+		AccessKey: accessKey,
+		SecretKey: secretKey,
+		Bucket:    bucket,
+		Domain:    domain,
 	}
 	q.Domain = strings.TrimRight(q.Domain, "/")
-	q.mac = qbox.NewMac(accessId, accessSecret)
-	q.Zone, err = storage.GetZone(accessId, bucket)
+	q.mac = qbox.NewMac(accessKey, secretKey)
+	q.Zone, err = storage.GetZone(accessKey, bucket)
 	return
 }
 

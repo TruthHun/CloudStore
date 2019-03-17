@@ -15,7 +15,7 @@ import (
 )
 
 type COS struct {
-	SecretId  string
+	AccessKey string
 	SecretKey string
 	Bucket    string
 	AppID     string
@@ -24,9 +24,9 @@ type COS struct {
 	Client    *cos.Client
 }
 
-func NewCOS(secretId, secretKey, bucket, appId, region, domain string) (c *COS, err error) {
+func NewCOS(accessKey, secretKey, bucket, appId, region, domain string) (c *COS, err error) {
 	c = &COS{
-		SecretId:  secretId,
+		AccessKey: accessKey,
 		SecretKey: secretKey,
 		Bucket:    bucket,
 		AppID:     appId,
@@ -42,7 +42,7 @@ func NewCOS(secretId, secretKey, bucket, appId, region, domain string) (c *COS, 
 		&http.Client{
 			Timeout: 120 * time.Second,
 			Transport: &cos.AuthorizationTransport{
-				SecretID:  secretId,
+				SecretID:  accessKey,
 				SecretKey: secretKey,
 			},
 		})
@@ -99,7 +99,7 @@ func (c *COS) GetSignURL(object string, expire int64) (link string, err error) {
 		exp := time.Duration(expire) * time.Second
 		u, err = c.Client.Object.GetPresignedURL(context.Background(),
 			http.MethodGet, objectRel(object),
-			c.SecretId, c.SecretKey,
+			c.AccessKey, c.SecretKey,
 			exp, nil)
 		if err != nil {
 			return

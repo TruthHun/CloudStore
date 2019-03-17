@@ -11,27 +11,27 @@ import (
 )
 
 type OBS struct {
-	AccessId     string
-	AccessSecret string
-	Bucket       string
-	Endpoint     string
-	Domain       string
-	Client       *obs.ObsClient
+	AccessKey string
+	SecretKey string
+	Bucket    string
+	Endpoint  string
+	Domain    string
+	Client    *obs.ObsClient
 }
 
-func NewOBS(accessId, accessSecret, bucket, endpoint, domain string) (o *OBS, err error) {
+func NewOBS(accessKey, secretKey, bucket, endpoint, domain string) (o *OBS, err error) {
 	o = &OBS{
-		AccessId:     accessId,
-		AccessSecret: accessSecret,
-		Endpoint:     endpoint,
-		Bucket:       bucket,
+		AccessKey: accessKey,
+		SecretKey: secretKey,
+		Endpoint:  endpoint,
+		Bucket:    bucket,
 	}
 
 	if domain == "" {
 		domain = fmt.Sprintf("https://%v.%v", bucket, endpoint)
 	}
 	o.Domain = strings.TrimRight(domain, "/")
-	o.Client, err = obs.New(accessId, accessSecret, endpoint)
+	o.Client, err = obs.New(accessKey, secretKey, endpoint)
 	return
 }
 

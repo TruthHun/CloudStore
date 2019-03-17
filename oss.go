@@ -11,29 +11,29 @@ import (
 )
 
 type OSS struct {
-	Key      string
-	Secret   string
-	Endpoint string
-	Bucket   string
-	Domain   string
-	Client   *oss.Bucket
+	AccessKey string
+	SecretKey string
+	Endpoint  string
+	Bucket    string
+	Domain    string
+	Client    *oss.Bucket
 }
 
 // New OSS
-func NewOSS(key, secret, endpoint, bucket, domain string) (o *OSS, err error) {
+func NewOSS(accessKey, secretKey, endpoint, bucket, domain string) (o *OSS, err error) {
 	var client *oss.Client
 	if domain == "" {
 		domain = "https://" + bucket + "." + endpoint
 	}
 	domain = strings.TrimRight(domain, "/ ")
 	o = &OSS{
-		Key:      key,
-		Secret:   secret,
-		Endpoint: endpoint,
-		Bucket:   bucket,
-		Domain:   domain,
+		AccessKey: accessKey,
+		SecretKey: secretKey,
+		Endpoint:  endpoint,
+		Bucket:    bucket,
+		Domain:    domain,
 	}
-	client, err = oss.New(endpoint, key, secret)
+	client, err = oss.New(endpoint, accessKey, secretKey)
 	if err != nil {
 		return
 	}
