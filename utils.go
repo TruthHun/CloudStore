@@ -1,8 +1,12 @@
 package CloudStore
 
 import (
+	"bytes"
+	"compress/gzip"
 	"crypto/md5"
 	"encoding/hex"
+	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -25,4 +29,25 @@ func MD5Crypt(str string) string {
 	h := md5.New()
 	h.Write([]byte(str))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+func CompressByGzip(tmpFile, saveFile string) (err error) {
+	var (
+		input []byte
+		buf   bytes.Buffer
+	)
+	input, err = ioutil.ReadFile(tmpFile)
+	if err != nil {
+		return
+	}
+
+	writer, _ := gzip.NewWriterLevel(&buf, gzip.BestCompression)
+	defer writer.Close()
+
+	writer.Write(input)
+	writer.Flush()
+
+	err = ioutil.WriteFile(saveFile, buf.Bytes(), os.ModePerm)
+
+	return
 }
