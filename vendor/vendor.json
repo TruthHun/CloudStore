@@ -87,6 +87,48 @@
 			"revisionTime": "2018-09-16T13:16:37Z"
 		},
 		{
+			"checksumSHA1": "D+HXKli4FaT6X77RbIavuHXMfFo=",
+			"path": "github.com/minio/minio-go",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "pw8e6bgWfeEZUIMnD0Zge4d/KPo=",
+			"path": "github.com/minio/minio-go/pkg/credentials",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "Md5pOKYfoKtrG7xNvs2FtiDPfDc=",
+			"path": "github.com/minio/minio-go/pkg/encrypt",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "1KcTZxPRRQ0BWLt1zDVG1bSjm/4=",
+			"path": "github.com/minio/minio-go/pkg/s3signer",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "7iUaZkEJdhkyAu3F07vrX8pyavI=",
+			"path": "github.com/minio/minio-go/pkg/s3utils",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "Wt8ej+rZXTdNBR9Xyw1eGo3Iq5o=",
+			"path": "github.com/minio/minio-go/pkg/set",
+			"revision": "5d20267d970d9e514bbcb88b37b059bb5321ff60",
+			"revisionTime": "2019-03-13T21:28:32Z"
+		},
+		{
+			"checksumSHA1": "7zLQC+jG19ndjH24FVh/+ZliHac=",
+			"path": "github.com/mitchellh/go-homedir",
+			"revision": "af06845cf3004701891bf4fdb884bfe4920b3727",
+			"revisionTime": "2019-01-27T04:21:35Z"
+		},
+		{
 			"checksumSHA1": "vXMG1/IJTCtt2bgLjIgYZv9mybI=",
 			"path": "github.com/mozillazg/go-cos",
 			"revision": "99eb77820590d3f93902fd18244c87d635bfc3e2",
@@ -123,8 +165,18 @@
 			"revisionTime": "2018-09-17T02:50:42Z"
 		},
 		{
+			"path": "golang.org/x/net/http/httpguts",
+			"revision": ""
+		},
+		{
 			"path": "golang.org/x/time/rate",
 			"revision": ""
+		},
+		{
+			"checksumSHA1": "s4yxtZss88Rf9psrJz9S1EAy6vI=",
+			"path": "gopkg.in/ini.v1",
+			"revision": "c85607071cf08ca1adaf48319cd1aa322e81d8c1",
+			"revisionTime": "2019-02-17T19:36:56Z"
 		}
 	],
 	"rootPath": "github.com/TruthHun/CloudStore"

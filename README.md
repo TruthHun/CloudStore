@@ -6,7 +6,7 @@
 - [x] cos - 腾讯云云存储
     - SDK:
     - 文档:
-- bos - 百度云云存储
+- [x] bos - 百度云云存储
     - SDK:
     - 文档:
 - qiniu - 七牛云存储
@@ -15,7 +15,7 @@
 - [x] upyun - 又拍云存储
   - SDK:
   - 文档:  
-- obs - 华为云云存储
+- [x] obs - 华为云云存储
     - SDK：      https://support.huaweicloud.com/devg-obs_go_sdk_doc_zh/zh-cn_topic_0142815182.html
     - 文档：      https://support.huaweicloud.com/api-obs_go_sdk_api_zh/zh-cn_topic_0142812005.html
 - minio
@@ -30,7 +30,11 @@ TODO:
 - [ ] 注意，domain 参数要处理一下，最后统一不带"/"
 - [ ] 最后获取的签名链接，替换成绑定的域名
 - [ ] 压缩一个gzip的svg图片，测试下能否正常访问
+- [ ] timeout 时间要处理一下，因为一些非内网方式上传文件，在大文件的时候，5分钟或者10分钟都有可能会超时
+- [ ] `Lists`方法在查询列表的时候，需要对prefix参数做下处理
 
+## 注意
+所有云存储的`endpoint`，在配置的时候都是不带 `http://`或者`https://`的
 
 ## 为什么要有这个项目？
 
