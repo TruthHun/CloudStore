@@ -149,9 +149,9 @@ func (c Client) PresignedPostPolicy(p *PostPolicy) (u *url.URL, formData map[str
 	if signerType.IsV2() {
 		policyBase64 := p.base64()
 		p.formData["policy"] = policyBase64
-		// For Google endpoint set this value to be 'GoogleAccessId'.
+		// For Google endpoint set this value to be 'GoogleaccessKey'.
 		if s3utils.IsGoogleEndpoint(*c.endpointURL) {
-			p.formData["GoogleAccessId"] = accessKeyID
+			p.formData["GoogleaccessKey"] = accessKeyID
 		} else {
 			// For all other endpoints set this value to be 'AWSAccessKeyId'.
 			p.formData["AWSAccessKeyId"] = accessKeyID

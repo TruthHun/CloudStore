@@ -35,7 +35,7 @@ type HTTPMaxConns struct {
 // Config defines oss configuration
 type Config struct {
 	Endpoint         string       // OSS endpoint
-	AccessKeyID      string       // AccessId
+	AccessKeyID      string       // accessKey
 	AccessKeySecret  string       // AccessKey
 	RetryTimes       uint         // Retry count by default it's 5.
 	UserAgent        string       // SDK name/version/system information

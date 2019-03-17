@@ -11,7 +11,7 @@ import (
 // CnameSample shows the cname usage
 func CnameSample() {
 	// New client
-	client, err := oss.New(endpoint4Cname, accessID4Cname, accessKey4Cname,
+	client, err := oss.New(endpoint4Cname, accessKey4Cname, accessKey4Cname,
 		oss.UseCname(true))
 	if err != nil {
 		HandleError(err)

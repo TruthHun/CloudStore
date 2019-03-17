@@ -9,7 +9,7 @@ import (
 // BucketACLSample shows how to get and set the bucket ACL
 func BucketACLSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

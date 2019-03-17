@@ -9,7 +9,7 @@ import (
 // CreateBucketSample shows how to create bucket
 func CreateBucketSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

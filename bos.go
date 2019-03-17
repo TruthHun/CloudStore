@@ -1,6 +1,7 @@
 package CloudStore
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -50,6 +51,8 @@ func (b *BOS) Upload(tmpFile, saveFile string, headers ...map[string]string) (er
 				args.ContentDisposition = v
 			case "content-type":
 				args.ContentType = v
+			case "content-encoding":
+				args.ContentEncoding = v
 			default:
 				args.UserMeta[k] = v
 			}
@@ -66,7 +69,10 @@ func (b *BOS) Delete(objects ...string) (err error) {
 	for idx, object := range objects {
 		objects[idx] = objectRel(object)
 	}
-	_, err = b.Client.DeleteMultipleObjectsFromKeyList(b.Bucket, objects)
+	res, _ := b.Client.DeleteMultipleObjectsFromKeyList(b.Bucket, objects)
+	if res != nil && len(res.Errors) > 0 {
+		err = fmt.Errorf("%+v", res)
+	}
 	return
 }
 

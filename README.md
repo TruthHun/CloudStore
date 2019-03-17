@@ -21,7 +21,6 @@
 - minio
     - SDK:
     - 文档:
-- local - 本地化存储
 
 
 

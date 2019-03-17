@@ -23,7 +23,7 @@ func HandleError(err error) {
 // GetTestBucket creates the test bucket
 func GetTestBucket(bucketName string) (*oss.Bucket, error) {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func GetTestBucket(bucketName string) (*oss.Bucket, error) {
 // DeleteTestBucketAndLiveChannel 删除sample的channelname和bucket，该函数为了简化sample，让sample代码更明了
 func DeleteTestBucketAndLiveChannel(bucketName string) error {
 	// New Client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		return err
 	}
@@ -90,7 +90,7 @@ func DeleteTestBucketAndLiveChannel(bucketName string) error {
 // DeleteTestBucketAndObject deletes the test bucket and its objects
 func DeleteTestBucketAndObject(bucketName string) error {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		return err
 	}

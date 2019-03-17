@@ -10,7 +10,7 @@ import (
 // NewBucketSample shows how to initialize client and bucket
 func NewBucketSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

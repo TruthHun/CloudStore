@@ -9,7 +9,7 @@ import (
 // BucketLifecycleSample shows how to set, get and delete bucket's lifecycle.
 func BucketLifecycleSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

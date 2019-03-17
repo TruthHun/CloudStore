@@ -9,7 +9,7 @@ import (
 // BucketLoggingSample shows how to set, get and delete the bucket logging configuration
 func BucketLoggingSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

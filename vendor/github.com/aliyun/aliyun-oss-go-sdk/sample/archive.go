@@ -11,7 +11,7 @@ import (
 // ArchiveSample archives sample
 func ArchiveSample() {
 	// Create archive bucket
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}

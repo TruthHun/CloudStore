@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -50,4 +51,12 @@ func CompressByGzip(tmpFile, saveFile string) (err error) {
 	err = ioutil.WriteFile(saveFile, buf.Bytes(), os.ModePerm)
 
 	return
+}
+
+func toJSON(v interface{}) (jsonStr string) {
+	p, err := json.Marshal(v)
+	if err != nil {
+		return
+	}
+	return string(p)
 }

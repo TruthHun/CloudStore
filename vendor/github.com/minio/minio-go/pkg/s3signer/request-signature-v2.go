@@ -83,7 +83,7 @@ func PreSignV2(req http.Request, accessKeyID, secretAccessKey string, expires in
 	query := req.URL.Query()
 	// Handle specially for Google Cloud Storage.
 	if strings.Contains(getHostAddr(&req), ".storage.googleapis.com") {
-		query.Set("GoogleAccessId", accessKeyID)
+		query.Set("GoogleaccessKey", accessKeyID)
 	} else {
 		query.Set("AWSAccessKeyId", accessKeyID)
 	}

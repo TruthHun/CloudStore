@@ -9,7 +9,7 @@ import (
 // BucketRefererSample shows how to set, get and delete the bucket referer.
 func BucketRefererSample() {
 	// New client
-	client, err := oss.New(endpoint, accessID, accessKey)
+	client, err := oss.New(endpoint, accessKey, accessKey)
 	if err != nil {
 		HandleError(err)
 	}
