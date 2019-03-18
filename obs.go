@@ -1,6 +1,7 @@
 package CloudStore
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -41,11 +42,17 @@ func (o *OBS) IsExist(object string) (err error) {
 }
 
 func (o *OBS) Upload(tmpFile, saveFile string, headers ...map[string]string) (err error) {
-	input := &obs.PutFileInput{}
+	var p []byte
+	p, err = ioutil.ReadFile(tmpFile)
+	if err != nil {
+		return
+	}
+
+	input := &obs.PutObjectInput{}
 	input.Bucket = o.Bucket
 	input.Key = objectRel(saveFile)
-	input.SourceFile = tmpFile
 	input.Metadata = make(map[string]string)
+	input.Body = bytes.NewBuffer(p)
 
 	for _, header := range headers {
 		for k, v := range header {
@@ -61,7 +68,7 @@ func (o *OBS) Upload(tmpFile, saveFile string, headers ...map[string]string) (er
 			}
 		}
 	}
-	_, err = o.Client.PutFile(input)
+	_, err = o.Client.PutObject(input)
 	return
 }
 
