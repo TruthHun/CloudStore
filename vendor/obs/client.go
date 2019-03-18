@@ -720,7 +720,6 @@ func (obsClient ObsClient) PutFile(input *PutFileInput) (output *PutObjectOutput
 	_input := &PutObjectInput{}
 	_input.PutObjectBasicInput = input.PutObjectBasicInput
 	_input.Body = body
-
 	if _input.ContentType == "" && _input.Key != "" {
 		if contentType, ok := mime_types[_input.Key[strings.LastIndex(_input.Key, ".")+1:]]; ok {
 			_input.ContentType = contentType
