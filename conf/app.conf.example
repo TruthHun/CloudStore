@@ -1,0 +1,50 @@
+[oss]
+accessKey       =
+secretKey       =
+endpoint        =   oss-cn-shenzhen.aliyuncs.com
+bucket          =   public-dochub
+domain          =   https://public-dochub.oss-cn-shenzhen.aliyuncs.com
+
+[bos]
+accessKey       =
+secretKey       =
+bucket          =   dochub
+endpoint        =   gz.bcebos.com
+domain          =   https://dochub.cdn.bcebos.com/
+
+[cos]
+accessKey       =
+secretKey       =
+bucket          =   dochub
+appID           =   1251298948
+region          =   ap-guangzhou
+domain          =   https://dochub-1251298948.cos.ap-guangzhou.myqcloud.com
+
+[obs]
+accessKey       =
+secretKey       =
+bucket          =   dochub
+endpoint        =   obs.ap-southeast-1.myhuaweicloud.com
+domain          =   https://dochub.obs.ap-southeast-1.myhuaweicloud.com
+
+[upyun]
+bucket          =
+operator        =
+password        =
+domain          =   http://dochub.test.upcdn.net
+secret          =   123456
+
+[qiniu]
+accessKey       =
+secretKey       =
+bucket          =   dochub
+domain          =   http://pohp6456o.bkt.clouddn.com/
+
+[minio]
+accessKey       =
+secretKey       =
+endpoint        =   127.0.0.1:9000
+bucket          =   dochub
+domain          =   http://127.0.0.1:9000
+
+
