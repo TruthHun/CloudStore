@@ -13,11 +13,11 @@ type File struct {
 }
 
 type CloudStore interface {
-	Delete(...string) error                            // 删除文件
-	GetSignURL(string, int64) (string, error)          // 文件访问签名
-	IsExist(string) error                              // 判断文件是否存在
-	Lists(prefix string) ([]File, error)               // 文件前缀，列出文件
-	Upload(string, string, ...map[string]string) error // 上传文件
-	Download(string, string) error                     // 下载文件
-	GetInfo(string) (File, error)                      // 获取指定文件信息
+	Delete(objects ...string) (err error)                                             // 删除文件
+	GetSignURL(object string, expire int64) (link string, err error)                  // 文件访问签名
+	IsExist(object string) (err error)                                                // 判断文件是否存在
+	Lists(prefix string) (files []File, err error)                                    // 文件前缀，列出文件
+	Upload(tmpFile string, saveFile string, headers ...map[string]string) (err error) // 上传文件
+	Download(object string, savePath string) (err error)                              // 下载文件
+	GetInfo(object string) (info File, err error)                                     // 获取指定文件信息
 }

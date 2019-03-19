@@ -1,4 +1,51 @@
-# 云储存
+# CloudStore - 云储存集成
+
+国内各大云存储服务接口集成，让云存储使用更方便简单。
+
+目前集成的有：`阿里云OSS`,`百度云BOS`、`腾讯云COS`、`华为云OBS`、`七牛云`、`又拍云`、[Minio](https://www.bookstack.cn/books/MinioCookbookZH)
+
+## 为什么要有这个项目？
+
+为了一劳永逸...
+
+为了变得更懒...
+
+如果上传文件到各大云存储，都变成下面这样:
+```
+clientBOS.Upload(tmpFile, saveFile)     // 百度云
+clientCOS.Upload(tmpFile, saveFile)     // 腾讯云
+clientMinio.Upload(tmpFile, saveFile)   // Minio
+clientOBS.Upload(tmpFile, saveFile)     // 华为云
+clientOSS.Upload(tmpFile, saveFile)     // 阿里云
+clientUpYun.Upload(tmpFile, saveFile)   // 又拍云
+clientQiniu.Upload(tmpFile, saveFile)   // 七牛云
+```
+
+如果各大云存储删除文件对象，都变成下面这样：
+```
+clientXXX.Delete(file1, file2, file3, ...)
+```
+
+不需要翻看各大云存储服务的一大堆文档，除了创建的客户端对象不一样之外，调用的方法和参数都一毛一样，会不会很爽？
+
+
+
+## 目前初步实现的功能接口
+
+```
+type CloudStore interface {
+	Delete(objects ...string) (err error)                                             // 删除文件
+	GetSignURL(object string, expire int64) (link string, err error)                  // 文件访问签名
+	IsExist(object string) (err error)                                                // 判断文件是否存在
+	Lists(prefix string) (files []File, err error)                                    // 文件前缀，列出文件
+	Upload(tmpFile string, saveFile string, headers ...map[string]string) (err error) // 上传文件
+	Download(object string, savePath string) (err error)                              // 下载文件
+	GetInfo(object string) (info File, err error)                                     // 获取指定文件信息
+}
+```
+
+
+## 目前集成和实现的功能
 
 - [x] oss - 阿里云云存储
     - SDK:
@@ -30,7 +77,6 @@ TODO:
 - [ ] 最后获取的签名链接，替换成绑定的域名
 - [ ] timeout 时间要处理一下，因为一些非内网方式上传文件，在大文件的时候，5分钟或者10分钟都有可能会超时
 - [ ] `Lists`方法在查询列表的时候，需要对prefix参数做下处理
-- [ ] 文件URL签名有效期，大于7天的，都统一设置为7天
 
 ## 注意
 所有云存储的`endpoint`，在配置的时候都是不带 `http://`或者`https://`的
@@ -45,23 +91,6 @@ TODO:
 - [x] 华为云 OBS，在上传svg的时候不需要压缩，svg访问的时候，云存储自行压缩了
 
 
-## 为什么要有这个项目？
 
-自己开源的两个项目 [BookStack](https://github.com/TruthHun/BookStack)、
-[DocHub](https://github.com/TruthHun/DocHub) 使用到云存储，
-但是各个云存储服务商的接口都各不相同，使用起来非常麻烦，所以直接弄了这么一个云存储的集合，
-设计统一的接口规范，以方便使用。
 
-你不需要看各大云存储的文档，只需要看这里的集成，统一使用各大云存储
 
-目前只是对云存储做一个简单的集成，更多功能集成，有待不断升级迭代.
-
-## 目前实现的接口
-以`bucket`为操作单位
-- 上传文件对象（同时返回文件信息，如文件大小等）
-- 获取文件对象链接地址 (分内网和外网以及签名链接地址)
-- 获取文件对象基本信息 (文档大小、扩展名、更新时间)
-- 获取文件对象列表
-- `header` 设置 （仅对云存储邮箱）
-- 删除文件对象
-- 下载文件到云存
