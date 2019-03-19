@@ -47,27 +47,13 @@ type CloudStore interface {
 
 ## 目前集成和实现的功能
 
-- [x] oss - 阿里云云存储
-    - SDK:
-    - 文档:
-- [x] cos - 腾讯云云存储
-    - SDK:
-    - 文档:
-- [x] bos - 百度云云存储
-    - SDK:
-    - 文档:
-- qiniu - 七牛云存储
-    - SDK:
-    - 文档:
-- [x] upyun - 又拍云存储
-  - SDK:
-  - 文档:  
-- [x] obs - 华为云云存储
-    - SDK：      https://support.huaweicloud.com/devg-obs_go_sdk_doc_zh/zh-cn_topic_0142815182.html
-    - 文档：      https://support.huaweicloud.com/api-obs_go_sdk_api_zh/zh-cn_topic_0142812005.html
-- minio
-    - SDK:
-    - 文档:
+- [x] oss - 阿里云云存储 [SDK](https://github.com/aliyun/aliyun-oss-go-sdk) && [文档](https://www.bookstack.cn/books/aliyun-oss-go-sdk)
+- [x] cos - 腾讯云云存储 [SDK](https://github.com/tencentyun/cos-go-sdk-v5) && [文档](https://www.bookstack.cn/books/tencent-cos-go-sdk)
+- [x] bos - 百度云云存储 [SDK](https://github.com/baidubce/bce-sdk-go) && [文档](https://www.bookstack.cn/books/bos-go-sdk)
+- [x] qiniu - 七牛云存储 [SDK](https://github.com/qiniu/api.v7) && [文档](https://www.bookstack.cn/books/qiniu-go-sdk)
+- [x] upyun - 又拍云存储 [SDK](https://github.com/upyun/go-sdk) && [文档]()
+- [x] obs - 华为云云存储 [SDK](https://support.huaweicloud.com/devg-obs_go_sdk_doc_zh/zh-cn_topic_0142815182.html) && [文档](https://www.bookstack.cn/books/obs-go-sdk)
+- [x] minio [SDK](https://github.com/minio/minio-go) && [文档](https://www.bookstack.cn/books/MinioCookbookZH)
 
 
 
