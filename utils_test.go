@@ -8,7 +8,7 @@ var (
 	objectHtml     = "test_data/helloworld.html"      //未经gzip压缩的HTML
 	objectHtmlGzip = "test_data/helloworld.gzip.html" //gzip压缩后的HTML
 	objectNotExist = "not exist object"
-	objectPrefix   = "README"
+	objectPrefix   = "test_data"
 	objectDownload = "test_data/download.svg"
 	headerGzip     = map[string]string{"Content-Encoding": "gzip"}
 	headerSVG      = map[string]string{"Content-Type": "image/svg+xml"}

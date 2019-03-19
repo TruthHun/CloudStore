@@ -124,8 +124,11 @@ func (o *OSS) GetInfo(object string) (info File, err error) {
 }
 
 func (o *OSS) Lists(prefix string) (files []File, err error) {
+	prefix = objectRel(prefix)
+
 	var res oss.ListObjectsResult
-	res, err = o.Client.ListObjects(oss.Prefix(objectRel(prefix)))
+
+	res, err = o.Client.ListObjects(oss.Prefix(prefix))
 	if err != nil {
 		return
 	}

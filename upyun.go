@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -93,6 +94,7 @@ func (u *UpYun) GetSignURL(object string, expire int64) (link string, err error)
 
 func (u *UpYun) Lists(prefix string) (files []File, err error) {
 	chans := make(chan *upyun.FileInfo, 1000)
+	prefix = objectRel(prefix)
 	u.Client.List(&upyun.GetObjectsConfig{
 		Path:        prefix,
 		ObjectsChan: chans,
@@ -104,7 +106,7 @@ func (u *UpYun) Lists(prefix string) (files []File, err error) {
 			Size:    obj.Size,
 			IsDir:   obj.IsDir,
 			Header:  obj.Meta, // 注意：这里获取不到文件的header
-			Name:    objectRel(obj.Name),
+			Name:    filepath.Join(prefix, objectRel(obj.Name)),
 		}
 		files = append(files, file)
 	}

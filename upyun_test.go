@@ -39,7 +39,7 @@ func TestUpYun(t *testing.T) {
 	if files, err := Up.Lists(objectPrefix); err != nil {
 		t.Error(err)
 	} else {
-		t.Log(fmt.Sprintf("%+v", files))
+		t.Log(objectPrefix, ":", fmt.Sprintf("%+v", files))
 	}
 	t.Log("=====GetInfo=====")
 	if info, err := Up.GetInfo(objectSVG); err != nil {
