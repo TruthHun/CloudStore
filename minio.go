@@ -120,6 +120,9 @@ func (m *MinIO) GetSignURL(object string, expire int64) (link string, err error)
 		return
 	}
 	link = u.String()
+	if !strings.HasPrefix(link, m.Domain) {
+		link = m.Domain + u.RequestURI()
+	}
 	return
 }
 

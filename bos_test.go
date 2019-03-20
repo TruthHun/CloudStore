@@ -33,11 +33,11 @@ func init() {
 func TestBOS(t *testing.T) {
 	// upload
 	t.Log("=====Upload=====", objectSVG, objectSVGGzip)
-	err = Bos.Upload(objectSVG, objectSVG,headerSVG)
+	err = Bos.Upload(objectSVG, objectSVG, headerSVG)
 	if err != nil {
 		t.Error(err)
 	}
-	err = Bos.Upload(objectSVGGzip, objectSVGGzip, headerGzip,headerSVG)
+	err = Bos.Upload(objectSVGGzip, objectSVGGzip, headerGzip, headerSVG)
 	if err != nil {
 		t.Error(err)
 	}
@@ -48,6 +48,9 @@ func TestBOS(t *testing.T) {
 	if files, err := Bos.Lists(objectPrefix); err != nil {
 		t.Error(err)
 	} else {
+		if len(files) == 0 {
+			t.Error("获取列表数据失败")
+		}
 		t.Log(fmt.Sprintf("%+v", files))
 	}
 	t.Log("=====GetInfo=====")
@@ -69,6 +72,10 @@ func TestBOS(t *testing.T) {
 	t.Log(Bos.GetSignURL(objectSVG, 120))
 	t.Log(Bos.GetSignURL(objectSVGGzip, 120))
 	t.Log("========Finished========")
+}
+
+func TestBOS_GetSignURL(t *testing.T) {
+	t.Log(Bos.GetSignURL(objectSVG, 3600))
 }
 
 func TestBOS_Delete(t *testing.T) {

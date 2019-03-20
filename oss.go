@@ -3,6 +3,7 @@ package CloudStore
 import (
 	"errors"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -82,7 +83,17 @@ func (o *OSS) GetSignURL(object string, expire int64) (link string, err error) {
 	if expire <= 0 {
 		return o.Domain + "/" + path, nil
 	}
-	return o.Client.SignURL(path, http.MethodGet, expire)
+	link, err = o.Client.SignURL(path, http.MethodGet, expire)
+	if err != nil {
+		return
+	}
+	if !strings.HasPrefix(link, o.Domain) {
+		if u, errU := url.Parse(link); errU == nil {
+			link = o.Domain + u.RequestURI()
+		}
+	}
+
+	return
 }
 
 func (o *OSS) Download(object string, savePath string) (err error) {

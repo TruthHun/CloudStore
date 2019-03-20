@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 
@@ -107,6 +108,11 @@ func (o *OBS) GetSignURL(object string, expire int64) (link string, err error) {
 		return
 	}
 	link = output.SignedUrl
+	if !strings.HasPrefix(link, o.Domain) {
+		if u, errU := url.Parse(link); errU == nil {
+			link = o.Domain + u.RequestURI()
+		}
+	}
 	return
 }
 

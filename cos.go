@@ -40,7 +40,7 @@ func NewCOS(accessKey, secretKey, bucket, appId, region, domain string) (c *COS,
 	c.Client = cos.NewClient(
 		&cos.BaseURL{BucketURL: u},
 		&http.Client{
-			Timeout: 120 * time.Second,
+			Timeout: 1800 * time.Second,
 			Transport: &cos.AuthorizationTransport{
 				SecretID:  accessKey,
 				SecretKey: secretKey,
@@ -94,19 +94,23 @@ func (c *COS) Delete(objects ...string) (err error) {
 }
 
 func (c *COS) GetSignURL(object string, expire int64) (link string, err error) {
+	if expire <= 0 {
+		link = c.Domain + objectAbs(object)
+		return
+	}
+
 	var u *url.URL
-	if expire > 0 {
-		exp := time.Duration(expire) * time.Second
-		u, err = c.Client.Object.GetPresignedURL(context.Background(),
-			http.MethodGet, objectRel(object),
-			c.AccessKey, c.SecretKey,
-			exp, nil)
-		if err != nil {
-			return
-		}
-		link = u.String()
-	} else {
-		link = c.Domain + "/" + objectRel(object)
+	exp := time.Duration(expire) * time.Second
+	u, err = c.Client.Object.GetPresignedURL(context.Background(),
+		http.MethodGet, objectRel(object),
+		c.AccessKey, c.SecretKey,
+		exp, nil)
+	if err != nil {
+		return
+	}
+	link = u.String()
+	if !strings.HasPrefix(link, c.Domain) {
+		link = c.Domain + u.RequestURI()
 	}
 	return
 }

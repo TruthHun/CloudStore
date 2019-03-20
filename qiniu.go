@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -67,7 +68,7 @@ func (q *QINIU) Upload(tmpFile, saveFile string, headers ...map[string]string) (
 		Params: params,
 	}
 	saveFile = objectRel(saveFile)
-	// 需要先删除，文件存在的话，没法覆盖
+	// 需要先删除，文件已存在的话，没法覆盖
 	q.Delete(saveFile)
 	err = form.PutFile(context.Background(), ret, token, saveFile, tmpFile, extra)
 	return
@@ -122,6 +123,13 @@ func (q *QINIU) GetSignURL(object string, expire int64) (link string, err error)
 	} else {
 		link = storage.MakePublicURL(q.Domain, object)
 	}
+
+	if !strings.HasPrefix(link, q.Domain) {
+		if u, errU := url.Parse(link); errU == nil {
+			link = q.Domain + u.RequestURI()
+		}
+	}
+
 	return
 }
 

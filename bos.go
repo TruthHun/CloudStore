@@ -3,6 +3,7 @@ package CloudStore
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -81,6 +82,11 @@ func (b *BOS) GetSignURL(object string, expire int64) (link string, err error) {
 		link = b.Domain + objectAbs(object)
 	} else {
 		link = b.Client.BasicGeneratePresignedUrl(b.Bucket, objectRel(object), int(expire))
+		if !strings.HasPrefix(link, b.Domain) {
+			if u, errU := url.Parse(link); errU == nil {
+				link = b.Domain + u.RequestURI()
+			}
+		}
 	}
 	return
 }
