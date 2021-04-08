@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/httplib"
-	"github.com/qiniu/api.v7/auth/qbox"
-	"github.com/qiniu/api.v7/storage"
+	"github.com/qiniu/api.v7/v7/auth/qbox"
+	"github.com/qiniu/api.v7/v7/storage"
 )
 
 type QINIU struct {
